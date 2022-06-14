@@ -1,4 +1,4 @@
-const dotEnv = require('dotenv');
+import * as dotEnv from 'dotenv';
 
 if (process.env.NODE_ENV !== 'prod') {
     const configFile = `./.env.${process.env.NODE_ENV}`;
@@ -7,7 +7,7 @@ if (process.env.NODE_ENV !== 'prod') {
     dotEnv.config()
 }
 
-const conf = {
+export const conf = {
     PORT: process.env.PORT,
     DB: {
         HOST: process.env.DB_HOST,
@@ -15,7 +15,11 @@ const conf = {
         USER: process.env.DB_USER,
         PASSWORD: process.env.DB_PASSWORD,
     },
+    SALT: process.env.BCRYPT_SALT,
+    JWT: {
+        SECRET: process.env.JWT_SECRET,
+        ISSUER: process.env.JWT_ISSUER,
+        ACCESS_TOKEN_EXPIRE: process.env.JWT_ACCESS_TOKEN_EXPIRE,
+        REFRESH_TOKEN_EXPIRE: process.env.JWT_REFRESH_TOKEN_EXPIRE
+    }
 }
-
-
-module.exports = conf
