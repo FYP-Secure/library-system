@@ -12,6 +12,13 @@ export const getBorrowedBooks = async (userId: number, isCurrent: boolean): Prom
         where: {
             studentId: userId,
             ...returnDateCondition
+        },
+        include: {
+            book: {
+                select: {
+                    title: true
+                }
+            }
         }
     })
 }
