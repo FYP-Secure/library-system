@@ -5,8 +5,11 @@ const { conf } = require('./config')
 import {router as userRouter} from "./routes/user.route";
 import {router as bookRouter} from "./routes/book.route";
 import {router as borrowRouter} from "./routes/borrow.route";
+import cors from "cors";
 
 const app = express();
+
+app.use(cors);
 app.use(express.json());
 
 app.listen(conf.PORT, () => {
