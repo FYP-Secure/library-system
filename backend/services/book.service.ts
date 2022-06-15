@@ -2,7 +2,7 @@ import {PrismaClient, Book} from "@prisma/client";
 import {BookBase, BookUpdate} from "../requests/book";
 import {ForbiddenException} from "../exceptions/exceptions";
 
-export const createBook = async (bookCreate: BookBase) : Promise<Book> => {
+export const createBook = async (bookCreate: BookBase): Promise<Book> => {
     const prisma = new PrismaClient();
     return prisma.book.create({
         data: {
@@ -13,7 +13,7 @@ export const createBook = async (bookCreate: BookBase) : Promise<Book> => {
     });
 }
 
-export const getBookById = async (id: number) : Promise<Book> => {
+export const getBookById = async (id: number): Promise<Book> => {
     const prisma = new PrismaClient();
     const book = await prisma.book.findUnique({
         where: {
@@ -21,35 +21,35 @@ export const getBookById = async (id: number) : Promise<Book> => {
         }
     })
 
-    if (! book)
+    if (!book)
         throw new ForbiddenException(`Book with id ${id} is not found!`);
 
     return book;
 }
 
-export const getBooks = async () : Promise<Book[]> => {
+export const getBooks = async (): Promise<Book[]> => {
     const prisma = new PrismaClient();
 
     return prisma.book.findMany();
 }
 
-export const updateBook = async (id: number, data: BookUpdate) : Promise<Book> => {
+export const updateBook = async (id: number, data: BookUpdate): Promise<Book> => {
     const prisma = new PrismaClient();
 
     await getBookById(id);
 
     return prisma.book.update({
-        where : {
+        where: {
             id
         },
-        data : {
+        data: {
             ...data,
             updateAt: new Date()
         }
     })
 }
 
-export const deleteBook = async (id : number) : Promise<void> => {
+export const deleteBook = async (id: number): Promise<void> => {
     const prisma = new PrismaClient();
     await prisma.book.delete({
         where: {
@@ -60,7 +60,7 @@ export const deleteBook = async (id : number) : Promise<void> => {
     return;
 }
 
-export const borrowBook = async (bookId: number, userId: number) : Promise<void> => {
+export const borrowBook = async (bookId: number, userId: number): Promise<void> => {
     const prisma = new PrismaClient();
 
     const book = await getBookById(bookId);
@@ -83,7 +83,7 @@ export const borrowBook = async (bookId: number, userId: number) : Promise<void>
     })
 }
 
-export const returnBook = async (borrowId: number, userId: number) : Promise<void> => {
+export const returnBook = async (borrowId: number, userId: number): Promise<void> => {
     const prisma = new PrismaClient();
 
     const userWithRecord = await prisma.user.findUnique({
@@ -101,7 +101,7 @@ export const returnBook = async (borrowId: number, userId: number) : Promise<voi
 
     const bookId = userWithRecord?.borrowRecords.at(0)?.bookId || null;
 
-    if (! bookId)
+    if (!bookId)
         throw new ForbiddenException(`Invalid record`);
 
     await prisma.book.update({

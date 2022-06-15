@@ -1,13 +1,15 @@
 import {Router} from "express"
 import {BookBase, BookUpdate} from "../requests/book";
 import {createBook, deleteBook, getBookById, getBooks, updateBook} from "../services/book.service";
+import {requireAuth} from "../middlewares/authMiddleware";
+import {Role} from "@prisma/client";
 
 export const router = Router();
 
 /**
  * create book
  */
-router.post("/book", async(req, res, next) => {
+router.post("/book", requireAuth([Role.ADMIN, Role.SUPER_ADMIN]), async (req, res, next) => {
     const bookCreate: BookBase = req.body;
 
     try {
@@ -22,7 +24,7 @@ router.post("/book", async(req, res, next) => {
 /**
  * get all book
  */
-router.get("/books", async(req, res, next) => {
+router.get("/books", requireAuth(), async (req, res, next) => {
     try {
         const books = await getBooks();
 
@@ -35,8 +37,8 @@ router.get("/books", async(req, res, next) => {
 /**
  * get one book
  */
-router.get("/book/:id", async(req, res, next) => {
-    const { id }  = req.params;
+router.get("/book/:id", requireAuth(), async (req, res, next) => {
+    const {id} = req.params;
 
     try {
         const book = await getBookById(+id);
@@ -51,8 +53,8 @@ router.get("/book/:id", async(req, res, next) => {
 /**
  * update one book
  */
-router.put("/book/:id", async(req, res, next) => {
-    const { id } = req.params;
+router.put("/book/:id", requireAuth([Role.SUPER_ADMIN, Role.ADMIN]), async (req, res, next) => {
+    const {id} = req.params;
     const bookUpdate: BookUpdate = req.body;
 
     try {
@@ -68,8 +70,8 @@ router.put("/book/:id", async(req, res, next) => {
 /**
  * delete one book
  */
-router.delete("/book/:id", async(req, res, next) => {
-    const { id } = req.params;
+router.delete("/book/:id", requireAuth( [Role.SUPER_ADMIN, Role.ADMIN]), async (req, res, next) => {
+    const {id} = req.params;
 
     try {
         await deleteBook(+id);
