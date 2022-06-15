@@ -4,9 +4,9 @@ export const getBorrowedBooks = async (userId: number, isCurrent: boolean): Prom
     const prisma = new PrismaClient();
 
     const returnDateCondition = isCurrent ?
-        {}
-        :
         {returnDate: null}
+        :
+        {}
 
     return prisma.borrow.findMany({
         where: {
