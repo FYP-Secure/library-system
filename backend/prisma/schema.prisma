@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+    id Int @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now())
+    email String @unique
+    name String
+    password String
+    role Role
+    borrowRecords Borrow[]
+}
+
+model Book {
+    id Int @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updateAt DateTime @default(now())
+    title String @db.VarChar(255)
+    description String @db.VarChar(255)
+    img String @db.MediumText
+    borrowRecords Borrow[]
+    isBorrowed Boolean @default(false)
+}
+
+model Borrow {
+    id Int @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updateAt DateTime @default(now())
+    student User @relation(fields: [studentId], references: [id])
+    studentId Int
+    book Book @relation(fields: [bookId], references: [id])
+    bookId Int
+    borrowDate DateTime @default(now())
+    returnDate DateTime?
+}
+
+enum Role {
+    ADMIN
+    SUPER_ADMIN
+    STUDENT
+}
