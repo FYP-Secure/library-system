@@ -1,7 +1,8 @@
-import {Role} from "@prisma/client";
+
 import {Request, Response, NextFunction} from "express";
 import {decodeJwt} from "../services/jwt.service";
 import {ClientException, ForbiddenException} from "../exceptions/exceptions";
+import {Role} from "@prisma/client";
 
 export const requireAuth = (roles: Role[] = [Role.STUDENT, Role.ADMIN, Role.SUPER_ADMIN]) => {
 

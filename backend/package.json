@@ -2,7 +2,9 @@
   "name": "backend",
   "scripts": {
     "start": "NODE_ENV=prod nodemon --exec npx ts-node app.ts",
-    "dev": "NODE_ENV=dev node app.ts"
+    "dev": "NODE_ENV=dev node app.ts",
+    "db:setup": "npx prisma generate && npx prisma migrate dev",
+    "db:seed": "ts-node prisma/seed.ts"
   },
   "dependencies": {
     "@prisma/client": "^3.15.1",
