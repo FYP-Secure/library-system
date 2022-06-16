@@ -1,14 +1,35 @@
 import {Button, Form, Input, Upload, Image} from "antd";
 import {ErrorNotification} from "../../../components/notification/error";
 import {useState} from "react";
+import axios from "axios";
+import {SuccessNotification} from "../../../components/notification/success";
 
-export const AddBookView = () => {
+export const AddBookView = ({ onCloseModal }: any) => {
 
     const [imageUrl, setImageUrl] = useState("");
     const [form] = Form.useForm();
 
     const onFinish = () => {
-
+        form.validateFields().then(values => {
+            axios.post(`${process.env.REACT_APP_API_URL}/book`, {
+                title: values.title,
+                description: values.description,
+                img: "IMG" // TODO: image
+            }, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+                }
+            })
+                .then((res) => {
+                    SuccessNotification("Created successfully")
+                })
+                .catch((error) => {
+                    ErrorNotification(error)
+                })
+                .finally(() => {
+                    onCloseModal()
+                })
+        })
     }
 
     return (

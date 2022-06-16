@@ -1,10 +1,20 @@
 import {Button, Form, Image, Input, Upload} from "antd";
 import {ErrorNotification} from "../../../components/notification/error";
+import axios from "axios";
+import {SuccessNotification} from "../../../components/notification/success";
 
-export const DeleteBookView = () => {
+export const DeleteBookView = ({ record, onCloseModal }: any) => {
 
     const onFinish = () => {
-        console.log("DELETE")
+        axios.delete(`${process.env.REACT_APP_API_URL}/book/${record.id}`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            }
+        })
+            .finally(() => {
+                SuccessNotification("Deleted successfully")
+                onCloseModal()
+            })
     }
 
     return (

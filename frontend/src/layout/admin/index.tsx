@@ -6,16 +6,17 @@ import {
     VideoCameraOutlined,
 } from '@ant-design/icons';
 import {Layout, Menu} from 'antd';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Outlet, useNavigate
 } from "react-router-dom";
+import axios from "axios";
+import {ErrorNotification} from "../../components/notification/error";
 
 const {Header, Sider, Content} = Layout;
 
 export const AdminLayout = () => {
     const [collapsed, setCollapsed] = useState(false);
-
     const navigate = useNavigate()
 
     return (
@@ -30,7 +31,7 @@ export const AdminLayout = () => {
                         {
                             key: '1',
                             icon: <UserOutlined/>,
-                            label: 'Dashboard',
+                            label: 'Book List',
                             onClick: () => {
                                 navigate("/admin/dashboard")
                             }

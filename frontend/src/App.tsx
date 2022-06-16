@@ -10,6 +10,7 @@ import {UserDashboard} from "./pages/user/dashboard";
 import {Login} from "./pages/login";
 import {AdminDashboard} from "./pages/admin/dashboard";
 import {AdminLayout} from "./layout/admin";
+import {Register} from "./pages/register";
 
 function App() {
     return (
@@ -30,6 +31,10 @@ function App() {
                         <Route
                             element={<Login/>}
                             path="/login"
+                        />
+                        <Route
+                            element={<Register/>}
+                            path="/register"
                         />
                     </Routes>
                 }

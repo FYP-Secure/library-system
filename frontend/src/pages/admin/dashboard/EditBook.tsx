@@ -1,14 +1,42 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Button, Form, Image, Input, Upload} from "antd";
 import {ErrorNotification} from "../../../components/notification/error";
+import axios from "axios";
+import {SuccessNotification} from "../../../components/notification/success";
 
-export const EditBookView = () => {
+export const EditBookView = ({ record, onCloseModal }: any) => {
     const [imageUrl, setImageUrl] = useState("");
     const [form] = Form.useForm();
 
     const onFinish = () => {
-
+        form.validateFields().then(values => {
+            axios.put(`${process.env.REACT_APP_API_URL}/book/${record.id}`, {
+                title: values.title,
+                description: values.description,
+            }, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+                }
+            })
+                .then((res) => {
+                    SuccessNotification("Update successfully")
+                })
+                .catch((error) => {
+                    ErrorNotification(error)
+                })
+                .finally(() => {
+                    onCloseModal()
+                })
+        })
     }
+
+    useEffect(() => {
+        form.setFieldsValue({
+            title: record.title,
+            description: record.description,
+            isBorrowed: record.isBorrowed,
+        })
+    }, [record]);
 
     return (
         <>
