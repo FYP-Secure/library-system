@@ -1,4 +1,4 @@
-import { PrismaClient, Role, User } from '@prisma/client'
+import { PrismaClient, Role } from '@prisma/client'
 import {encrypt} from "../services/password.service";
 const prisma = new PrismaClient()
 
@@ -7,7 +7,7 @@ async function main() {
     const superAdmin = await prisma.user.create({
         data: {
             email: "super_admin@admin.com",
-            name: "super admin",
+            name: "superadmin",
             role: Role.SUPER_ADMIN,
             password: await encrypt(password)
         }
