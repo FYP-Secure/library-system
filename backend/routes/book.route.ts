@@ -55,7 +55,7 @@ router.get("/book/:id", requireAuth(), async (req, res, next) => {
  */
 router.put("/book/:id", requireAuth([Role.SUPER_ADMIN, Role.ADMIN]), async (req, res, next) => {
     const {id} = req.params;
-    const bookUpdate: BookUpdate = req.body;
+    const bookUpdate: BookBase = req.body;
 
     try {
         const book = await updateBook(+id, bookUpdate);

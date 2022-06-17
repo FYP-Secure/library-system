@@ -33,7 +33,7 @@ export const getBooks = async (): Promise<Book[]> => {
     return prisma.book.findMany();
 }
 
-export const updateBook = async (id: number, data: BookUpdate): Promise<Book> => {
+export const updateBook = async (id: number, data: BookBase): Promise<Book> => {
     const prisma = new PrismaClient();
 
     await getBookById(id);
