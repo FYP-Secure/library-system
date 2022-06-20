@@ -29,17 +29,12 @@ export const UserLayout = () => {
                         {
                             key: '1',
                             icon: <UserOutlined/>,
-                            label: 'user 1',
+                            label: 'Book List',
                         },
                         {
                             key: '2',
                             icon: <VideoCameraOutlined/>,
-                            label: 'nav 2',
-                        },
-                        {
-                            key: '3',
-                            icon: <UploadOutlined/>,
-                            label: 'nav 3',
+                            label: 'Borrow History',
                         },
                         {
                             key: '4',
