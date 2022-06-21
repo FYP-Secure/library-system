@@ -44,10 +44,14 @@ export const AdminDashboard = () => {
                             setSelectedRecord(record)
                             setModalVisible({ ...modalVisible, edit: true })
                         }}>Edit</Button>
-                        <Button onClick={() => {
-                            setSelectedRecord(record)
-                            setModalVisible({ ...modalVisible, delete: true })
-                        }}>Delete</Button>
+                        {
+                            !record.isBorrowed && (
+                                <Button onClick={() => {
+                                    setSelectedRecord(record)
+                                    setModalVisible({ ...modalVisible, delete: true })
+                                }}>Delete</Button>
+                            )
+                        }
                     </Space>
                 );
             }

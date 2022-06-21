@@ -30,11 +30,11 @@ export const UserDashboard = () => {
 
 
     return (
-        <Space direction={"vertical"} style={{ width: "100%" }}>
+        <Space direction={"horizontal"} style={{ width: "100%" }}>
             {
                 bookList.map((book) => {
                     return (
-                        <BookCard title={book.title} description={book.description} bookId={book.id} />
+                        <BookCard title={book.title} description={book.description} bookId={book.id} img={book.img} />
                     )
                 })
             }

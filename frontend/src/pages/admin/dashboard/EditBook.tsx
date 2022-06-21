@@ -3,6 +3,7 @@ import {Button, Form, Image, Input, Upload} from "antd";
 import {ErrorNotification} from "../../../components/notification/error";
 import axios from "axios";
 import {SuccessNotification} from "../../../components/notification/success";
+import {getBase64} from "../../../utils/image";
 
 export const EditBookView = ({ record, onCloseModal }: any) => {
     const [imageUrl, setImageUrl] = useState("");
@@ -13,6 +14,7 @@ export const EditBookView = ({ record, onCloseModal }: any) => {
             axios.put(`${process.env.REACT_APP_API_URL}/book/${record.id}`, {
                 title: values.title,
                 description: values.description,
+                img: imageUrl
             }, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("accessToken")}`
@@ -31,11 +33,14 @@ export const EditBookView = ({ record, onCloseModal }: any) => {
     }
 
     useEffect(() => {
+        form.resetFields()
         form.setFieldsValue({
             title: record.title,
             description: record.description,
             isBorrowed: record.isBorrowed,
         })
+        setImageUrl(record.img)
+        console.log(record)
     }, [record]);
 
     return (
@@ -72,11 +77,12 @@ export const EditBookView = ({ record, onCloseModal }: any) => {
                         accept="image/png, image/jpeg"
                         maxCount={1}
                         showUploadList={false}
-                        customRequest={(file: any) => {
-                            console.log(file)
+                        customRequest={async (file: any) => {
                             const isLt2M = file.file.size / 1024 / 1024 / 1024 < 2000;
                             if (isLt2M) {
-
+                                await getBase64(file.file).then((base64String: any) => {
+                                    setImageUrl(base64String)
+                                });
                             } else {
                                 ErrorNotification("Image size should not be greater than 2000kb size");
                             }
