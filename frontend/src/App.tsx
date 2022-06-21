@@ -11,6 +11,7 @@ import {Login} from "./pages/login";
 import {AdminDashboard} from "./pages/admin/dashboard";
 import {AdminLayout} from "./layout/admin";
 import {Register} from "./pages/register";
+import {UserBorrowHistory} from "./pages/user/borrowHistory";
 
 function App() {
     return (
@@ -24,6 +25,7 @@ function App() {
                         />
                         <Route path="/user" element={<UserLayout/>}>
                             <Route path="/user/dashboard" element={<UserDashboard/>}/>
+                            <Route path="/user/history" element={<UserBorrowHistory/>}/>
                         </Route>
                         <Route path="/admin" element={<AdminLayout/>}>
                             <Route path="/admin/dashboard" element={<AdminDashboard/>}/>

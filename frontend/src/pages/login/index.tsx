@@ -8,7 +8,7 @@ import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import {SuccessNotification} from "../../components/notification/success";
 import {ErrorNotification} from "../../components/notification/error";
-import {JwtDecodedType} from "../../../dto/login";
+import {JwtDecodedType} from "../../models/dto/login.dto";
 
 export const Login = () => {
 

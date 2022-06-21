@@ -30,11 +30,17 @@ export const UserLayout = () => {
                             key: '1',
                             icon: <UserOutlined/>,
                             label: 'Book List',
+                            onClick: () => {
+                                navigate("/user/dashboard")
+                            }
                         },
                         {
                             key: '2',
                             icon: <VideoCameraOutlined/>,
                             label: 'Borrow History',
+                            onClick: () => {
+                                navigate("/user/history")
+                            }
                         },
                         {
                             key: '4',
