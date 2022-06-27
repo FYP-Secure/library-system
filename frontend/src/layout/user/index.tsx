@@ -8,13 +8,14 @@ import {
 import {Layout, Menu} from 'antd';
 import React, {useState} from 'react';
 import {
-    Outlet
+    Outlet, useNavigate
 } from "react-router-dom";
 
 const {Header, Sider, Content} = Layout;
 
 export const UserLayout = () => {
     const [collapsed, setCollapsed] = useState(false);
+    const navigate = useNavigate()
 
     return (
         <Layout style={{ height: "100vh" }}>
@@ -28,18 +29,27 @@ export const UserLayout = () => {
                         {
                             key: '1',
                             icon: <UserOutlined/>,
-                            label: 'user 1',
+                            label: 'Book List',
+                            onClick: () => {
+                                navigate("/user/dashboard")
+                            }
                         },
                         {
                             key: '2',
                             icon: <VideoCameraOutlined/>,
-                            label: 'nav 2',
+                            label: 'Borrow History',
+                            onClick: () => {
+                                navigate("/user/history")
+                            }
                         },
                         {
-                            key: '3',
-                            icon: <UploadOutlined/>,
-                            label: 'nav 3',
-                        },
+                            key: '4',
+                            icon: <UserOutlined/>,
+                            label: 'Log Out',
+                            onClick: () => {
+                                navigate("/login")
+                            }
+                        }
                     ]}
                 />
             </Sider>

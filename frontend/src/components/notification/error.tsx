@@ -1,8 +1,8 @@
 import {notification} from "antd";
 
-export const ErrorNotification = (message: string) => {
+export const ErrorNotification = (error: any) => {
     notification["error"]({
         message: 'Error',
-        description: message,
+        description: error?.response?.data?.message ?? `Something went wrong, ${error.toString()}`,
     });
 }

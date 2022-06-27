@@ -1,14 +1,47 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Button, Form, Image, Input, Upload} from "antd";
 import {ErrorNotification} from "../../../components/notification/error";
+import axios from "axios";
+import {SuccessNotification} from "../../../components/notification/success";
+import {getBase64} from "../../../utils/image";
 
-export const EditBookView = () => {
+export const EditBookView = ({ record, onCloseModal }: any) => {
     const [imageUrl, setImageUrl] = useState("");
     const [form] = Form.useForm();
 
     const onFinish = () => {
-
+        form.validateFields().then(values => {
+            axios.put(`${process.env.REACT_APP_API_URL}/book/${record.id}`, {
+                title: values.title,
+                description: values.description,
+                img: imageUrl
+            }, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+                }
+            })
+                .then((res) => {
+                    SuccessNotification("Update successfully")
+                })
+                .catch((error) => {
+                    ErrorNotification(error)
+                })
+                .finally(() => {
+                    onCloseModal()
+                })
+        })
     }
+
+    useEffect(() => {
+        form.resetFields()
+        form.setFieldsValue({
+            title: record.title,
+            description: record.description,
+            isBorrowed: record.isBorrowed,
+        })
+        setImageUrl(record.img)
+        console.log(record)
+    }, [record]);
 
     return (
         <>
@@ -44,11 +77,12 @@ export const EditBookView = () => {
                         accept="image/png, image/jpeg"
                         maxCount={1}
                         showUploadList={false}
-                        customRequest={(file: any) => {
-                            console.log(file)
+                        customRequest={async (file: any) => {
                             const isLt2M = file.file.size / 1024 / 1024 / 1024 < 2000;
                             if (isLt2M) {
-
+                                await getBase64(file.file).then((base64String: any) => {
+                                    setImageUrl(base64String)
+                                });
                             } else {
                                 ErrorNotification("Image size should not be greater than 2000kb size");
                             }

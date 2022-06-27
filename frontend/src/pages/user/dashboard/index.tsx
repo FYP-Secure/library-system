@@ -1,42 +1,43 @@
 import {Space, Table} from "antd";
+import {BookCard} from "../../../components/bookCard";
+import axios from "axios";
+import {useEffect, useState} from "react";
+import {BookListDto} from "../../../models/dto/book.dto";
+import {ErrorNotification} from "../../../components/notification/error";
 
 export const UserDashboard = () => {
-    const dataSource = [
-        {
-            key: '1',
-            name: 'Mike',
-            age: 32,
-            address: '10 Downing Street',
-        },
-        {
-            key: '2',
-            name: 'John',
-            age: 42,
-            address: '10 Downing Street',
-        },
-    ];
 
-    const columns = [
-        {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
-        },
-        {
-            title: 'Age',
-            dataIndex: 'age',
-            key: 'age',
-        },
-        {
-            title: 'Address',
-            dataIndex: 'address',
-            key: 'address',
-        },
-    ];
+    const [bookList, setBookList] = useState<BookListDto>([]);
+
+    const onGetBooksList = () => {
+        axios.get(`${process.env.REACT_APP_API_URL}/books`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            }
+        })
+            .then((res) => {
+                const response: BookListDto = res.data;
+                setBookList(response);
+            })
+            .catch((error) => {
+                ErrorNotification(error);
+            })
+    }
+
+    useEffect(() => {
+        onGetBooksList();
+    }, []);
+
 
     return (
-        <Space direction={"vertical"} style={{ width: "100%" }}>
-            <Table dataSource={dataSource} columns={columns} />
+        <Space direction={"horizontal"} style={{ width: "100%" }}>
+            {
+                bookList.map((book) => {
+                    return (
+                        <BookCard title={book.title} description={book.description} bookId={book.id} img={book.img} />
+                    )
+                })
+            }
         </Space>
     )
 }

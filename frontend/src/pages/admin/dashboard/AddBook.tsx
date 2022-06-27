@@ -1,15 +1,41 @@
 import {Button, Form, Input, Upload, Image} from "antd";
 import {ErrorNotification} from "../../../components/notification/error";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import axios from "axios";
+import {SuccessNotification} from "../../../components/notification/success";
+import {getBase64} from "../../../utils/image";
 
-export const AddBookView = () => {
+export const AddBookView = ({ onCloseModal }: any) => {
 
     const [imageUrl, setImageUrl] = useState("");
     const [form] = Form.useForm();
 
     const onFinish = () => {
-
+        form.validateFields().then(values => {
+            axios.post(`${process.env.REACT_APP_API_URL}/book`, {
+                title: values.title,
+                description: values.description,
+                img: imageUrl
+            }, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+                }
+            })
+                .then((res) => {
+                    SuccessNotification("Created successfully")
+                })
+                .catch((error) => {
+                    ErrorNotification(error)
+                })
+                .finally(() => {
+                    onCloseModal()
+                })
+        })
     }
+
+    useEffect(() => {
+        form.resetFields()
+    }, []);
 
     return (
         <>
@@ -45,11 +71,12 @@ export const AddBookView = () => {
                         accept="image/png, image/jpeg"
                         maxCount={1}
                         showUploadList={false}
-                        customRequest={(file: any) => {
-                            console.log(file)
+                        customRequest={async (file: any) => {
                             const isLt2M = file.file.size / 1024 / 1024 / 1024 < 2000;
                             if (isLt2M) {
-
+                                await getBase64(file.file).then((base64String: any) => {
+                                    setImageUrl(base64String)
+                                });
                             } else {
                                 ErrorNotification("Image size should not be greater than 2000kb size");
                             }
