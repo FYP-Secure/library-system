@@ -1,7 +1,7 @@
 {
   "name": "backend",
   "scripts": {
-    "start": "npx prisma generate && npx prisma migrate dev && NODE_ENV=prod nodemon --exec npx ts-node app.ts",
+    "start": "NODE_ENV=prod nodemon --exec npx ts-node app.ts",
     "dev": "NODE_ENV=dev nodemon --exec npx ts-node app.ts",
     "db:setup": "npx prisma generate && npx prisma migrate dev",
     "db:reset": "npx prisma migrate reset",
