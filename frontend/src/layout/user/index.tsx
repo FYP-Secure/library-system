@@ -18,7 +18,7 @@ export const UserLayout = () => {
     const navigate = useNavigate()
 
     return (
-        <Layout style={{ height: "100vh" }}>
+        <Layout style={{ height: "100%" }}>
             <Sider trigger={null} collapsible collapsed={collapsed}>
                 <div className="logo"/>
                 <Menu

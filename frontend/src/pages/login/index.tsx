@@ -1,6 +1,6 @@
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import {LockOutlined, UserOutlined} from '@ant-design/icons';
 import {Button, Checkbox, Form, Input, Space, Spin} from 'antd';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import jwt_decode from "jwt-decode";
 
 import "./index.css";
@@ -44,37 +44,40 @@ export const Login = () => {
     };
 
     return (
-        <div style={{ margin: "10%" }}>
+        <div style={{margin: "10%"}}>
+            <div style={{textAlign: 'center'}}>
+                <h1>Library System</h1>
+            </div>
             <Form
                 name="normal_login"
                 className="login-form"
-                initialValues={{ remember: true }}
+                initialValues={{remember: true}}
                 onFinish={onFinish}
             >
                 <Form.Item
                     name="email"
                     rules={[
-                        { required: true, message: 'Please input your email!' },
-                        { type: 'email', message: 'The input is not valid E-mail!' }
+                        {required: true, message: 'Please input your email!'},
+                        {type: 'email', message: 'The input is not valid E-mail!'}
                     ]}
                 >
-                    <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Email" />
+                    <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="Email"/>
                 </Form.Item>
                 <Form.Item
                     name="password"
-                    rules={[{ required: true, message: 'Please input your Password!' }]}
+                    rules={[{required: true, message: 'Please input your Password!'}]}
                 >
                     <Input
-                        prefix={<LockOutlined className="site-form-item-icon" />}
+                        prefix={<LockOutlined className="site-form-item-icon"/>}
                         type="password"
                         placeholder="Password"
                     />
                 </Form.Item>
 
-                <div style={{ textAlign: "center" }}>
+                <div style={{textAlign: "center"}}>
                     {
                         loading ? (
-                            <Spin size={"large"} />
+                            <Spin size={"large"}/>
                         ) : (
                             <Space direction={"vertical"}>
                                 <Button type="primary" htmlType="submit" className="login-form-button">
